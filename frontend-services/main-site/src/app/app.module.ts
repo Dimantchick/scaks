@@ -19,7 +19,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     keycloak.init({
       config: {
         realm: environment.REALM_NAME,
-        url: 'https://scaks.dimantchick.tk/auth',
+        url: environment.AUTH_FRONTEND,
         clientId: 'frontend'
       },
       initOptions: {
