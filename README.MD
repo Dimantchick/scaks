@@ -1,4 +1,4 @@
-# Spring cloud, Angular, Keycloak starter
+# Spring Cloud, Angular, Keycloak starter
 ## About
 Base project to write microservice project with Spring Boot, Cloud, Angular and Keycloak
 ## Scheme
