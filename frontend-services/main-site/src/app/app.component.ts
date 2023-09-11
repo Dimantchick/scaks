@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {KeycloakProfile} from "keycloak-js";
 import {KeycloakService} from "keycloak-angular";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,6 @@ export class AppComponent implements OnInit  {
   }
 
   public logout() {
-    this.keycloak.logout("https://scaks.dimantchick.tk");
+    this.keycloak.logout(environment.FRONTEND_URL);
   }
 }
