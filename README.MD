@@ -12,19 +12,19 @@ ext {
    set('dockerRemote', '192.168.0.201:2375') // your docker remote address
 }
    ```
-2. run gradle clean bootBuildImage
 3. change docker-compose with your params and remove not needed to you exposed ports
-4. change main.env with your vars (domain, credentials, registry)
-5. run /src/Docker-compose.yml with main.env
-6. Open as you FRONTEND from .env, use credentials john@test.com/123
-7. WARNING!!! For production you must remove from base-realm.json all "secret": from realm clients and remove test users - it's insecure!
+4. change main.env and angular environments (environment.ts and environment.prod.ts) in main-site subproject with your vars (domain, realm, credentials, registry, etc)
+5. run gradle clean bootBuildImage on main project (all subprojects automatically all subprojects will be built and pushed)
+6. run /src/Docker-compose.yml with main.env in your docker
+7. Open as you FRONTEND from .env, use credentials john@test.com/123
+8. WARNING!!! For production you must remove from base-realm.json all "secret": from realm clients and remove test users - it's insecure!
 
 ## Subsprojects
 ### Backend-services
 #### Gateway-service
 Spring cloud gateway - org.springframework.cloud:spring-cloud-starter-gateway
 #### Resource-server-template
-Spring boot resource server (backend api service)
+Spring boot resource server (backend api service) - org.springframework.boot:spring-boot-starter-oauth2-resource-server
 ### Frontend-services
 #### Main-site
 Angular app automatically built in nginx docker container 
