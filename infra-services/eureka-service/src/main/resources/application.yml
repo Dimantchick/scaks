@@ -1,0 +1,33 @@
+server:
+  port: 8761
+
+#encrypt.key: ${ENCRYPT_KEY:Cvo7HWIiDUvK}
+
+spring:
+  application:
+    name: eureka-service
+  security:
+    user:
+      name: ${EUREKA_USERNAME:eureka_user}
+      password: ${EUREKA_PASSWORD:Eureka_password}
+      roles: ADMIN
+eureka:
+  instance:
+    preferIpAddress: true
+    #     to allow SBA access this service
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://eureka_user:Eureka_password@localhost:8761/eureka}
+  server:
+    waitTimeInMsWhenSyncEmpty: 5
+management:
+  endpoints:
+    web.exposure.include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

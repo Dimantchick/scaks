@@ -1,0 +1,60 @@
+#encrypt.key: ${ENCRYPT_KEY:Cvo7HWIiDUvK}
+server:
+  port: 8082
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: resource
+          uri: lb://RESOURCE-SERVICE/api/resource-server
+          predicates:
+            - Path=/api/resource-server/**
+        - id: auth
+          uri: lb://AUTH-SERVICE/auth
+          predicates:
+            - Path=/auth/**
+        #Always last!
+        - id: site
+          uri: ${MAIN-SITE:http://localhost:8080}
+          predicates:
+            - Path=/**,/**.js,/**.html,/**.css
+  security:
+    user:
+      name: ${EUREKA_USERNAME:eureka_user}
+      password: ${EUREKA_PASSWORD:Eureka_password}
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI:http://localhost:8082/auth/realms/scaks}
+          jwk-set-uri: ${JWK_SET_URI:http://localhost:8082/auth/realms/scaks/protocol/openid-connect/certs}
+eureka:
+  instance:
+    preferIpAddress: true
+    # to allow SBA access itself
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://eureka_user:Eureka_password@localhost:8761/eureka}
+
+# Enable these to debug the Authorization flow
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security:
+#          web: DEBUG
+management:
+  endpoint:
+    health:
+      showDetails: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"

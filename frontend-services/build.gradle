@@ -1,0 +1,5 @@
+tasks.named("bootJar") {
+    mainClass = ''
+}
+
+bootBuildImage.enabled = false

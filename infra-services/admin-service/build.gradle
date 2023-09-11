@@ -1,0 +1,34 @@
+group 'tk.scaks.admin'
+version '0.0.1'
+
+ext {
+    set('springBootAdminVersion', "3.1.3")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'de.codecentric:spring-boot-admin-starter-server'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named("bootBuildImage") {
+    environment["BP_HEALTH_CHECKER_ENABLED"] = "true"
+    buildpacks = ["urn:cnb:builder:paketo-buildpacks/java", "gcr.io/paketo-buildpacks/health-checker:latest"]
+    imageName = "$registry/admin-service:latest"
+    docker{
+        host = "tcp://$dockerRemote"
+        publish = true
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,37 @@
+plugins {
+    id "com.github.node-gradle.node" version "7.0.0"
+}
+
+group "tk.scaks.mainsite"
+version "latest"
+
+ext {
+    set('siteContainerName', "$registry/main-site:$version")
+}
+
+task buildAngularApp(type: NpmTask) {
+    dependsOn npmInstall
+    args = ['run', 'prod']
+    inputs.files('package.json', 'package-lock.json', 'angular.json', 'tsconfig.json', 'tsconfig.app.json')
+    inputs.dir('src')
+    inputs.dir(fileTree("node_modules").exclude(".cache"))
+    outputs.dir('dist')
+}
+
+task dockerBuild(type: Exec) {
+    dependsOn buildAngularApp
+    workingDir "."
+    commandLine "docker", "-H=$dockerRemote", "build", "-t", "$siteContainerName", "-f", "./Dockerfile", "."
+}
+
+task dockerPush(type: Exec) {
+    dependsOn dockerBuild
+    workingDir "."
+    commandLine "docker", "-H=$dockerRemote", "push", "$siteContainerName"
+}
+
+bootBuildImage.enabled = false
+tasks.named("bootJar") {
+    dependsOn dockerPush
+    mainClass = ''
+}

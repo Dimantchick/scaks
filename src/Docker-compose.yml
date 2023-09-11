@@ -1,0 +1,160 @@
+version: "3.9"
+name: "scaks-project"
+services:
+  main-site:
+    image: ${REGISTRY}/main-site:latest
+    container_name: main-site
+    restart: on-failure
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/assets/health.html | grep '\"status\": \"UP\"' || exit 1"
+      start_period: 30s
+      interval: 30s
+      retries: 10
+      timeout: 1s
+    ports:
+      - "8080:8080"
+    networks:
+      - scaks
+  gateway-service:
+    image: ${REGISTRY}/gateway-service:latest
+    container_name: gateway-service
+    restart: on-failure
+    environment:
+      BPL_JVM_THREAD_COUNT: 10
+      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      ISSUER_URI: ${ISSUER_URI}
+      JWK_SET_URI: ${JWK_SET_URI}
+      MAIN_SITE: ${MAIN_SITE}
+    healthcheck:
+      test: THC_PORT=8082 THC_PATH=/actuator/health health-check || exit 1
+      start_period: 20s
+      interval: 10s
+      retries: 10
+      timeout: 5s
+    ports:
+      - "8082:8082"
+    networks:
+      - scaks
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+  admin-service:
+    image: ${REGISTRY}/admin-service:latest
+    container_name: admin-service
+    restart: on-failure
+    environment:
+      BPL_JVM_THREAD_COUNT: 5
+      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+    healthcheck:
+      test: THC_PORT=9999 THC_PATH=/actuator/health health-check || exit 1
+      start_period: 20s
+      interval: 10s
+      retries: 10
+      timeout: 5s
+    ports:
+      - "9999:9999"
+    networks:
+      - scaks
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+  resource-service:
+    image: ${REGISTRY}/resource-service:latest
+    container_name: resource-service
+    restart: on-failure
+    environment:
+      BPL_JVM_THREAD_COUNT: 25
+      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      ISSUER_URI: ${ISSUER_URI}
+      JWK_SET_URI: ${JWK_SET_URI}
+    healthcheck:
+      test: THC_PORT=8081 THC_PATH=/api/resource-server/actuator/health health-check || exit 1
+      start_period: 20s
+      interval: 10s
+      retries: 10
+      timeout: 5s
+    ports:
+      - "8081:8081"
+    networks:
+      - scaks
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+  eureka-service:
+    image: ${REGISTRY}/eureka-service:latest
+    container_name: eureka-service
+    restart: on-failure
+    environment:
+      BPL_JVM_THREAD_COUNT: 10
+      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+    healthcheck:
+      test: THC_PORT=8761 THC_PATH=/actuator/health health-check || exit 1
+      start_period: 20s
+      interval: 10s
+      retries: 10
+      timeout: 5s
+    ports:
+      - "8761:8761"
+    networks:
+      - scaks
+  auth-service:
+    image: ${REGISTRY}/auth-service:latest
+    container_name: auth-service
+    restart: on-failure
+    environment:
+      BPL_JVM_THREAD_COUNT: 10
+      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      KC_DB_URL: jdbc:postgresql://kc-postgres:5432/keycloak
+      KC_DB_USER: ${KC_DB_USER}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_DB_SCHEMA: public
+      KC_DB_DIALECT: ${KC_DB_DIALECT}
+      KC_DB_DRIVER: ${KC_DB_DRIVER}
+      KC_FRONTEND_URL: ${KC_FRONTEND_URL}
+      KC_FRONTEND_URL_REDIRECT: ${KC_FRONTEND_URL_REDIRECT}
+      FRONTEND: ${FRONTEND}
+      REALM_NAME: ${REALM_NAME}
+    healthcheck:
+      test: THC_PORT=8282 THC_PATH=/actuator/health health-check || exit 1
+      start_period: 40s
+      interval: 10s
+      retries: 20
+      timeout: 10s
+    ports:
+      - "8282:8282"
+    networks:
+      - scaks
+    depends_on:
+      kc-postgres:
+        condition: service_healthy
+      eureka-service:
+        condition: service_healthy
+  kc-postgres:
+    image: library/postgres:${KC_POSTGRES_IMAGE_TAG:-14}
+    container_name: ${POSTGRES_CONTAINER_NAME:-postgres-db}
+    restart: on-failure
+    environment:
+      POSTGRES_USER: ${KC_DB_USER}
+      POSTGRES_PASSWORD: ${KC_DB_PASSWORD}
+      POSTGRES_DB: keycloak
+    healthcheck:
+      test: pg_isready -d postgres
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 25s
+    ports:
+      - ${KC_POSTGRES_PORT_MAPPING:-5432}:5432
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    networks:
+      - scaks
+networks:
+  scaks:
+    driver: bridge

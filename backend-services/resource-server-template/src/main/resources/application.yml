@@ -1,0 +1,54 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api/resource-server
+####### resource server configuration properties
+spring:
+  application:
+    name: resource-service
+  cloud:
+    discovery:
+      enabled: true
+  datasource:
+    #Setup database
+    url: jdbc:h2:mem:testdbresource
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    defer-datasource-initialization: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI:http://localhost:8082/auth/realms/scaks}
+          jwk-set-uri: ${JWK_SET_URI:http://localhost:8082/auth/realms/scaks/protocol/openid-connect/certs}
+eureka:
+  instance:
+    hostname: "localhost"
+    preferIpAddress: true
+    # to allow SBA access itself
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://eureka_user:Eureka_password@localhost:8761/eureka}
+# Enable these to debug the Authorization flow
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security:
+#          web: DEBUG
+management:
+  endpoint:
+    health:
+      showDetails: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
