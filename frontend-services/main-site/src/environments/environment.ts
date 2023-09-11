@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  REALM_NAME: "scaks",
   FRONTEND_URL: "https://scaks.dimantchick.tk",
   AUTH_FRONTEND: "http://scaks.dimantchick/auth"
 };

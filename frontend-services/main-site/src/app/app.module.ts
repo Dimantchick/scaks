@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakEventType, KeycloakService} from "keycloak-angular";
 import {HttpClientModule} from "@angular/common/http";
+import {environment} from "../environments/environment";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   keycloak.keycloakEvents$.subscribe({
@@ -17,7 +18,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        realm: 'scaks1',
+        realm: environment.REALM_NAME,
         url: 'https://scaks.dimantchick.tk/auth',
         clientId: 'frontend'
       },
