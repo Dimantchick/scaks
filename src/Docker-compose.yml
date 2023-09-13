@@ -21,10 +21,13 @@ services:
     restart: on-failure
     environment:
       BPL_JVM_THREAD_COUNT: 10
-      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      EUREKA_SERVER_HOST: ${EUREKA_SERVER_HOST}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
       ISSUER_URI: ${ISSUER_URI}
       JWK_SET_URI: ${JWK_SET_URI}
       MAIN_SITE: ${MAIN_SITE}
+      JASYPT_SECRET: ${JASYPT_SECRET}
     healthcheck:
       test: THC_PORT=8082 THC_PATH=/actuator/health health-check || exit 1
       start_period: 20s
@@ -46,7 +49,10 @@ services:
     restart: on-failure
     environment:
       BPL_JVM_THREAD_COUNT: 5
-      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      EUREKA_SERVER_HOST: ${EUREKA_SERVER_HOST}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+      JASYPT_SECRET: ${JASYPT_SECRET}
     healthcheck:
       test: THC_PORT=9999 THC_PATH=/actuator/health health-check || exit 1
       start_period: 20s
@@ -66,9 +72,12 @@ services:
     restart: on-failure
     environment:
       BPL_JVM_THREAD_COUNT: 25
-      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      EUREKA_SERVER_HOST: ${EUREKA_SERVER_HOST}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
       ISSUER_URI: ${ISSUER_URI}
       JWK_SET_URI: ${JWK_SET_URI}
+      JASYPT_SECRET: ${JASYPT_SECRET}
     healthcheck:
       test: THC_PORT=8081 THC_PATH=/api/resource-server/actuator/health health-check || exit 1
       start_period: 20s
@@ -90,7 +99,10 @@ services:
     restart: on-failure
     environment:
       BPL_JVM_THREAD_COUNT: 10
-      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      EUREKA_SERVER_HOST: ${EUREKA_SERVER_HOST}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+      JASYPT_SECRET: ${JASYPT_SECRET}
     healthcheck:
       test: THC_PORT=8761 THC_PATH=/actuator/health health-check || exit 1
       start_period: 20s
@@ -107,7 +119,9 @@ services:
     restart: on-failure
     environment:
       BPL_JVM_THREAD_COUNT: 10
-      EUREKA_SERVER_URL: ${EUREKA_SERVER_URL}
+      EUREKA_SERVER_HOST: ${EUREKA_SERVER_HOST}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
       KC_DB_URL: jdbc:postgresql://kc-postgres:5432/keycloak
       KC_DB_USER: ${KC_DB_USER}
       KC_DB_PASSWORD: ${KC_DB_PASSWORD}
@@ -118,6 +132,7 @@ services:
       KC_FRONTEND_URL_REDIRECT: ${KC_FRONTEND_URL_REDIRECT}
       FRONTEND: ${FRONTEND}
       REALM_NAME: ${REALM_NAME}
+      JASYPT_SECRET: ${JASYPT_SECRET}
     healthcheck:
       test: THC_PORT=8282 THC_PATH=/actuator/health health-check || exit 1
       start_period: 40s

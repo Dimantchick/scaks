@@ -1,4 +1,4 @@
-package tk.scaks.gateway;
+package tk.scaks.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

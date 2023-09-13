@@ -11,7 +11,7 @@ spring:
   security:
     user:
       name: ${EUREKA_USERNAME:eureka_user}
-      password: ${EUREKA_PASSWORD:Eureka_password}
+      password: ${EUREKA_PASSWORD:ENC(LLKDrDlcr1JyW6SHjzSEthj4R3Ggww4I9ar/YF/vwBWUXfwmw8xfTSt8BRmAFWCu)}
   datasource:
     url: ${KC_DB_URL:jdbc:h2:file:./test;DB_CLOSE_ON_EXIT=FALSE}
     username: ${KC_DB_USER:sa}
@@ -28,10 +28,13 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: ${EUREKA_SERVER_URL:http://eureka_user:Eureka_password@localhost:8761/eureka}
+      defaultZone: http://eureka_user:${spring.security.user.password}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
 management:
   endpoints:
     web.exposure.include: "*"
   endpoint:
     health:
       show-details: ALWAYS
+jasypt:
+  encryptor:
+    password: ${JASYPT_SECRET:scaks-jasypt-password}

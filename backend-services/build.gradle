@@ -2,3 +2,11 @@ tasks.named("bootJar") {
     mainClass = ''
 }
 bootBuildImage.enabled = false
+
+subprojects {
+    dependencies {
+        implementation "org.springframework.boot:spring-boot-starter-actuator"
+        implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:$jasyptVersion"
+        implementation "com.github.ulisesbocchio:jasypt-spring-boot:$jasyptVersion"
+    }
+}
