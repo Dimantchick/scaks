@@ -1,1 +1,1 @@
-Spring cloud admin
+Eureka server

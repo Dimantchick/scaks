@@ -21,28 +21,17 @@ spring:
           predicates:
             - Path=/**,/**.js,/**.html,/**.css
   security:
-    user:
-      name: ${EUREKA_USERNAME:eureka_user}
-      password: ${EUREKA_PASSWORD:Eureka_password}
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: ${ISSUER_URI:http://localhost:8082/auth/realms/scaks}
           jwk-set-uri: ${JWK_SET_URI:http://localhost:8082/auth/realms/scaks/protocol/openid-connect/certs}
 eureka:
-  instance:
-    preferIpAddress: true
-    # to allow SBA access itself
-    metadata-map:
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
-      user.name: ${spring.security.user.name}
-      user.password: ${spring.security.user.password}
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
-
+      defaultZone: http://${EUREKA_USERNAME:eureka_user}:${EUREKA_PASSWORD:ENC(LLKDrDlcr1JyW6SHjzSEthj4R3Ggww4I9ar/YF/vwBWUXfwmw8xfTSt8BRmAFWCu)}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
 # Enable these to debug the Authorization flow
 #logging:
 #  level:

@@ -1,5 +1,7 @@
-package tk.scaks.admin;
+package tk.scaks.eureka.controllers;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
  * Controller for encrypt values to ENV
  */
 @RestController
-public class EncController {
+public class AdminController {
 
     private final StringEncryptor encryptor;
 
-    public EncController(@Qualifier("stringEncryptor") StringEncryptor encryptor) {
+    public AdminController(@Qualifier("stringEncryptor") StringEncryptor encryptor) {
         this.encryptor = encryptor;
     }
 
