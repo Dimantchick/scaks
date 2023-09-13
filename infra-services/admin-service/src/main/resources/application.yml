@@ -1,4 +1,3 @@
-#encrypt.key: ${ENCRYPT_KEY:Cvo7HWIiDUvK}
 server:
   port: 8761
 
@@ -14,6 +13,7 @@ spring:
     user:
       name: ${EUREKA_USERNAME:eureka_user}
       password: ${EUREKA_PASSWORD:ENC(LLKDrDlcr1JyW6SHjzSEthj4R3Ggww4I9ar/YF/vwBWUXfwmw8xfTSt8BRmAFWCu)}
+      roles: ADMIN
 eureka:
   instance:
     preferIpAddress: true
