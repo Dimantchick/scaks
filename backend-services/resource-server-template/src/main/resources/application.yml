@@ -36,7 +36,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://eureka_user:${spring.security.user.password}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
 # Enable these to debug the Authorization flow
 #logging:
 #  level:

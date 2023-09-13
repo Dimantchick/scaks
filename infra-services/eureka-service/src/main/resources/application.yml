@@ -2,8 +2,10 @@ server:
   port: 8761
 
 #encrypt.key: ${ENCRYPT_KEY:Cvo7HWIiDUvK}
-
 spring:
+  boot:
+    admin:
+      context-path: /admin
   application:
     name: eureka-service
   security:
@@ -22,7 +24,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://eureka_user:${spring.security.user.password}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
   server:
     waitTimeInMsWhenSyncEmpty: 5
 management:
