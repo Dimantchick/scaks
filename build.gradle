@@ -28,6 +28,7 @@ subprojects {
 
     ext {
         set('springCloudVersion', "2022.0.4")
+        set('jasyptVersion', "3.0.5")
         set('registry', '192.168.0.201:5000') // CHANGE_ME
         set('dockerRemote', '192.168.0.201:2375') // CHANGE_ME
     }
