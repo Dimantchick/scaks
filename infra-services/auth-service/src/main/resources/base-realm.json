@@ -1472,7 +1472,7 @@
     "referrerPolicy": "no-referrer",
     "xRobotsTag": "none",
     "xFrameOptions": "SAMEORIGIN",
-    "contentSecurityPolicy": "frame-src 'self' ${FRONTEND:http://localhost:8082}; frame-ancestors 'self' ${FRONTEND:http://localhost:8082}; object-src 'none' ${FRONTEND:http://localhost:8082}; style-src 'self' ${FRONTEND:http://localhost:8082};",
+    "contentSecurityPolicy": "frame-src 'self' ${FRONTEND:http://localhost:8082}; frame-ancestors 'self' ${FRONTEND:http://localhost:8082}; style-src 'self' ${FRONTEND:http://localhost:8082};",
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },

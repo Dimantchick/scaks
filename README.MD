@@ -29,11 +29,12 @@ Spring boot resource server (backend api service) - org.springframework.boot:spr
 #### Main-site
 Angular app automatically built in nginx docker container 
 ### Infra-services
-#### Admin-service
-Spring cloud admin - de.codecentric:spring-boot-admin-starter-server
-View cloud status.
-Recommends to expose port, but only in secure tunnel (don't open to public).
 #### Auth-service
 Embedded in spring boot keycloak server.
-#### Eureka-service
+#### Admin-service
 Discovery service - org.springframework.cloud:spring-cloud-starter-netflix-eureka-server
+and
+Spring cloud admin - de.codecentric:spring-boot-admin-starter-server in /admin path
+View cloud status.
+Recommends to expose port, but only in secure tunnel (don't open to public).
+Has Basic authentication!

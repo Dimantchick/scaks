@@ -1,4 +1,4 @@
-package tk.scaks.admin;
+package tk.scaks.eureka.config;
 
 import com.ulisesbocchio.jasyptspringboot.properties.JasyptEncryptorConfigurationProperties;
 import org.jasypt.encryption.StringEncryptor;
