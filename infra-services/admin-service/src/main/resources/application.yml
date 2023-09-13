@@ -1,19 +1,24 @@
-#encrypt.key: ${ENCRYPT_KEY:Cvo7HWIiDUvK}
 server:
-  port: ${ADMIN_SERVER_PORT:9999}
+  port: 8761
+
+#encrypt.key: ${ENCRYPT_KEY:Cvo7HWIiDUvK}
+
 spring:
+  boot:
+    admin:
+      context-path: /admin
   application:
     name: admin-service
   security:
     user:
       name: ${EUREKA_USERNAME:eureka_user}
       password: ${EUREKA_PASSWORD:ENC(LLKDrDlcr1JyW6SHjzSEthj4R3Ggww4I9ar/YF/vwBWUXfwmw8xfTSt8BRmAFWCu)}
+      roles: ADMIN
 eureka:
   instance:
     preferIpAddress: true
-    # to allow SBA access this service
+    #     to allow SBA access this service
     metadata-map:
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
       user.name: ${spring.security.user.name}
       user.password: ${spring.security.user.password}
   client:
@@ -21,6 +26,8 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${EUREKA_SERVER_HOST:localhost:8761}/eureka
+  server:
+    waitTimeInMsWhenSyncEmpty: 5
 management:
   endpoints:
     web.exposure.include: "*"

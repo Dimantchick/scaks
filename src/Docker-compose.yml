@@ -39,32 +39,9 @@ services:
     networks:
       - scaks
     depends_on:
-      eureka-service:
+      admin-service:
         condition: service_healthy
       auth-service:
-        condition: service_healthy
-  admin-service:
-    image: ${REGISTRY}/admin-service:latest
-    container_name: admin-service
-    restart: on-failure
-    environment:
-      BPL_JVM_THREAD_COUNT: 5
-      EUREKA_SERVER_HOST: ${EUREKA_SERVER_HOST}
-      EUREKA_USERNAME: ${EUREKA_USERNAME}
-      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
-      JASYPT_SECRET: ${JASYPT_SECRET}
-    healthcheck:
-      test: THC_PORT=9999 THC_PATH=/actuator/health health-check || exit 1
-      start_period: 20s
-      interval: 10s
-      retries: 10
-      timeout: 5s
-    ports:
-      - "9999:9999"
-    networks:
-      - scaks
-    depends_on:
-      eureka-service:
         condition: service_healthy
   resource-service:
     image: ${REGISTRY}/resource-service:latest
@@ -89,13 +66,13 @@ services:
     networks:
       - scaks
     depends_on:
-      eureka-service:
+      admin-service:
         condition: service_healthy
       auth-service:
         condition: service_healthy
-  eureka-service:
-    image: ${REGISTRY}/eureka-service:latest
-    container_name: eureka-service
+  admin-service:
+    image: ${REGISTRY}/admin-service:latest
+    container_name: admin-service
     restart: on-failure
     environment:
       BPL_JVM_THREAD_COUNT: 10
@@ -146,7 +123,7 @@ services:
     depends_on:
       kc-postgres:
         condition: service_healthy
-      eureka-service:
+      admin-service:
         condition: service_healthy
   kc-postgres:
     image: library/postgres:${KC_POSTGRES_IMAGE_TAG:-14}
