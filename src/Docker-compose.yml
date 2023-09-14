@@ -5,12 +5,20 @@ services:
     image: ${REGISTRY}/main-site:latest
     container_name: main-site
     restart: on-failure
+    environment:
+      EUREKA_SERVER_HOST: ${EUREKA_SERVER_HOST}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: Eureka_password
     healthcheck:
-      test: "curl --fail --silent localhost:8080/assets/health.html | grep '\"status\": \"UP\"' || exit 1"
-      start_period: 30s
-      interval: 30s
+#      test: "curl --fail --silent localhost:8080/assets/health.html | grep '\"status\": \"UP\"' || exit 1"
+      test: sh /eureka/eureka.sh >> /eureka/eureka.log
+      start_period: 20s
+      interval: 20s
       retries: 10
       timeout: 1s
+    depends_on:
+      admin-service:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks:

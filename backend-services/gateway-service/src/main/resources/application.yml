@@ -17,7 +17,8 @@ spring:
             - Path=/auth/**
         #Always last!
         - id: site
-          uri: ${MAIN-SITE:http://localhost:8080}
+          uri: lb://MAIN-SITE
+          #${MAIN-SITE:http://localhost:8080}
           predicates:
             - Path=/**,/**.js,/**.html,/**.css
   security:

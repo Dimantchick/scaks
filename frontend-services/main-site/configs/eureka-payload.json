@@ -1,0 +1,17 @@
+{
+  "instance": {
+    "hostName": "${HOSTNAME}",
+    "app": "main-site",
+    "instanceId": "${HOSTNAME}:main-site:8080",
+    "ipAddr": "${IP_ADDR}",
+    "status": "UP",
+    "port": {
+      "$": 8080,
+      "@enabled": true
+    },
+    "dataCenterInfo": {
+      "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+      "name": "MyOwn"
+    }
+  }
+}

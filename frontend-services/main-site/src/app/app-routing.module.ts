@@ -10,6 +10,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'actuator/info',
+    loadChildren: () =>
+      import('./actuator/actuator.module').then(
+        (m) => m.ActuatorModule
+      ),
+  },
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',

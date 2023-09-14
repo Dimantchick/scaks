@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {KeycloakAngularModule, KeycloakEventType, KeycloakService} from "keycloak-angular";
 import {HttpClientModule} from "@angular/common/http";
 import {environment} from "../environments/environment";
+import { ActuatorComponent } from './actuator/actuator.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   keycloak.keycloakEvents$.subscribe({
